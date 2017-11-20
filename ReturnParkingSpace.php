@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <?php
 
@@ -45,4 +46,34 @@ function CalCulateRecent($lat,$lon)
 //echo "距離 = ".CalculateDis(25.0354351,121.4302754,25.0403582,21.4449868);
 
    
+=======
+<?php
+function CalCulateRecent()
+<?php
+//connectDB
+function CalCulateRecent($lat,$lon)
+{
+	$sql = "SELECT lat,lon,ID FROM parking";
+	$result = $conn->query($sql);
+
+	//Calculate points which distance 1km
+	sql
+}
+
+public static float distFrom(float lat1, float lng1, float lat2, float lng2) {
+    double earthRadius = 6371000; //meters
+    double dLat = Math.toRadians(lat2-lat1);
+    double dLng = Math.toRadians(lng2-lng1);
+    double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+               Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+               Math.sin(dLng/2) * Math.sin(dLng/2);
+    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    float dist = (float) (earthRadius * c);
+
+    return dist;
+    }
+ 
+
+?>
+>>>>>>> c09dbe75db6627deb6c39c1e0e89eb1fcceb7779
 ?>
