@@ -1,13 +1,9 @@
 <?php
+//Global $conn;
+header('Content-Type: application/json; charset=utf-8');
 
 
-function update()
-{
-	//update when time 
-}
 
-function SQLConnect()
-{
 	$servername = "localhost";
 	$username = "";
 	$password = "";
@@ -26,22 +22,23 @@ function SQLConnect()
 	    die ('Can\'t use: ' . mysqli_error());
 	else
 		echo "Connect db done\n";
-}
-
-SQLConnect();
 
 
-header('Content-Type: application/json; charset=utf-8');
+
+
 $Json_Parking=file_get_contents('http://data.ntpc.gov.tw/od/data/api/1A71BA9C-EF21-4524-B882-6D085DF2877A?$format=json');
 $Decode_Parking = json_decode($Json_Parking);
 //var_dump($data);
 
 $count = 0 ;
-$sql_tmp = "INSERT INTO parking (".$columnName.") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+//$sql_tmp = "INSERT INTO parking (".$columnName.") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-$stmt = $conn->prepare("INSERT INTO parking (Id,CellId,Name,Day,Hour,Pay,PayCash,Memo,RoadId,CellStatus,IsNowCash,ParkingStatus,Lat,Lon)
-						VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
-$stmt->bind_param($Id,$CellId,$Name,$Day,$Hour,$Pay,$PayCash,$Memo,$RoadId,$CellStatus,$IsNowCash,$ParkingStatus,$Lat,$Lon);
+$stmt = $conn->prepare("INSERT INTO parknig (Id,CellId,Name,Day,Hour,Pay,PayCash,Memo,RoadId,CellStatus,IsNowCash,ParkingStatus,Lat,Lon)
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
+if ($stmt === FALSE) {
+    die ("Mysql Error: " . $conn->error);
+}
+$stmt->bind_param("iissssssssiiii",$Id,$CellId,$Name,$Day,$Hour,$Pay,$PayCash,$Memo,$RoadId,$CellStatus,$IsNowCash,$ParkingStatus,$Lat,$Lon);
 
 foreach ($Decode_Parking as $value) 
 {
@@ -61,7 +58,7 @@ foreach ($Decode_Parking as $value)
 		$ParkingStatus= $value->ParkingStatus;
 		$Lat= $value->lat;
 		$Lon= $value->lon;
-
+		ECHO $PayCash.$Name.$CellStatus;
 		$stmt->execute();
 		//echo $value->lat." ".$value->ID."\n\n";
 	}
