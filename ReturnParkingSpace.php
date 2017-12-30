@@ -45,20 +45,22 @@ $servername = "localhost";
     //echo json_encode($ResponseArray);
 
 
-function CalculateDis($lat1,$lon1,$lat2,$lon2)
+function CalculateDis($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo)
 {
-    $earthRadius = 6371000; //meters
-    $lat1 = deg2rad($lat1);
-    $lon1 = deg2rad($lon1);
-    $latT2 = deg2rad($lat2);
-    $lonT2 = deg2rad($lon2);
+    $earthRadius = 6371000;
+  // convert from degrees to radians
+  $latFrom = deg2rad($latitudeFrom);
+  $lonFrom = deg2rad($longitudeFrom);
+  $latTo = deg2rad($latitudeTo);
+  $lonTo = deg2rad($longitudeTo);
 
-    $latDelta = $lat2 - $lat1;
-    $lonDelta = $lon2 - $lon1;
+  $lonDelta = $lonTo - $lonFrom;
+  $a = pow(cos($latTo) * sin($lonDelta), 2) +
+    pow(cos($latFrom) * sin($latTo) - sin($latFrom) * cos($latTo) * cos($lonDelta), 2);
+  $b = sin($latFrom) * sin($latTo) + cos($latFrom) * cos($latTo) * cos($lonDelta);
 
-    $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +cos($lat1) * cos($lat2) * pow(sin($lonDelta / 2), 2)));
-    return $angle * $earthRadius;
-
+  $angle = atan2(sqrt($a), $b);
+  return $angle * $earthRadius;
 }
 
 //$lat,$lon
