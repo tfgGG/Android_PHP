@@ -21,6 +21,11 @@ $servername = "localhost";
     //else
         //echo "Connect db done\n";
 
+      $_POST["Lat"];
+      $_POST["Lon"]; 
+      //$_POST["Meter"];
+
+
     $count=0;
     $Resultobject = new stdClass();
     $InsideObject = new stdClass();
@@ -31,19 +36,13 @@ $servername = "localhost";
         //{
             while($row = $result->fetch_array(MYSQLI_BOTH)) 
             {
-                $dis = CalculateDis(25.0354351,121.4302754,$row['Lat'],$row['Lon']);
-                $row['Distance'] = $dis;
-                //var_dump($row);
-                $ResponseArray[] = $row;
+                $dis = CalculateDis($_POST["Lat"],$_POST["Lon"],$row['Lat'],$row['Lon']);
 
-               //foreach ($row as $key=>$value) 
-                 //  $InsideObject-> $key = $value;
-               // $InsideObject->Lat = $row["Lat"];
-                //$ResponseArray[$count]= $InsideObject;
-                //echo $count++."\n";            
-            }        
-            
-        //}
+                if($dis<1000){
+                     $row['Distance'] = $dis;
+                    $ResponseArray[] = $row; 
+                }           
+            }                   
 
         $Resultobject->ParkingResult = $ResponseArray;
     }

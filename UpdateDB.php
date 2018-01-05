@@ -1,7 +1,7 @@
 <?php
 //Global $conn;
 header('Content-Type: application/json; charset=utf-8');
-
+ini_set("max_execution_time", "1000");
 
 
 	$servername = "localhost";
@@ -66,9 +66,9 @@ foreach ($Decode_Parking as $value)
  		echo 'Message: ' .$e->getMessage();
 	}
 	$count ++;
-	echo $count;
-	if($count==10)
-		break;
+	echo $count."\n";
+	//if($count==10)
+	//	break;
 }
 
 $stmt->close();
