@@ -38,7 +38,7 @@ $stmt = $conn->prepare("INSERT INTO parknig (Id,CellId,Name,Day,Hour,Pay,PayCash
 if ($stmt === FALSE) {
     die ("Mysql Error: " . $conn->error);
 }
-$stmt->bind_param("iissssssssiiii",$Id,$CellId,$Name,$Day,$Hour,$Pay,$PayCash,$Memo,$RoadId,$CellStatus,$IsNowCash,$ParkingStatus,$Lat,$Lon);
+$stmt->bind_param("iissssssssiidd",$Id,$CellId,$Name,$Day,$Hour,$Pay,$PayCash,$Memo,$RoadId,$CellStatus,$IsNowCash,$ParkingStatus,$Lat,$Lon);
 
 foreach ($Decode_Parking as $value) 
 {

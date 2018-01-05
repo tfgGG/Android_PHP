@@ -12,37 +12,45 @@ $servername = "localhost";
         // Check connectionif (!$conn) {
     if (!$conn) 
         die("Connection failed: " . mysqli_connect_error());
-    else
-        echo "Connected successfully \n";
+    //else
+        //echo "Connected successfully \n";
 
     $db_selected = mysqli_select_db($conn,'test');
     if (!$db_selected) 
         die ('Can\'t use: ' . mysqli_error());
-    else
-        echo "Connect db done\n";
+    //else
+        //echo "Connect db done\n";
 
+    $count=0;
+    $Resultobject = new stdClass();
+    $InsideObject = new stdClass();
     $ResponseArray = array(); //Remember to pass other feilds 
     if ($result = $conn->query("SELECT * FROM parknig")) 
     {
-        foreach($result as $row)
-        {
-            while($row = $result->fetch_array(MYSQLI_ASSOC)) 
+        //foreach($result as $row)
+        //{
+            while($row = $result->fetch_array(MYSQLI_BOTH)) 
             {
                 $dis = CalculateDis(25.0354351,121.4302754,$row['Lat'],$row['Lon']);
                 $row['Distance'] = $dis;
                 //var_dump($row);
-                //$ResponseArray[] = $row;
-                foreach ($row as $key=>$value) {
-                    echo $value." ";
-                }
-                echo "\n";
-            }
-        }
-    }
+                $ResponseArray[] = $row;
 
-    
+               //foreach ($row as $key=>$value) 
+                 //  $InsideObject-> $key = $value;
+               // $InsideObject->Lat = $row["Lat"];
+                //$ResponseArray[$count]= $InsideObject;
+                //echo $count++."\n";            
+            }        
+            
+        //}
+
+        $Resultobject->ParkingResult = $ResponseArray;
+    }
+    //var_dump($Resultobject);
+    echo json_encode($Resultobject);
    $result->close();
-    //echo json_encode($ResponseArray);
+    
 
 
 function CalculateDis($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo)

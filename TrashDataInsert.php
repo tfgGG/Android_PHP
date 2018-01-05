@@ -1,12 +1,34 @@
 <?php
 
 header('Content-Type: application/json; charset=utf-8');
+ini_set("max_execution_time", "300");
 $Json_Trash=file_get_contents('http://data.ntpc.gov.tw/od/data/api/EDC3AD26-8AE7-4916-A00B-BC6048D19BF8?$format=json');
 $Decode_Trash = json_decode($Json_Trash);
 $New_Trash = array();
 $Dayarray = array("mon"=>"1","tue"=>"2","wed"=>"3","thu"=>"4","fri"=>"5","sat"=>"6","sun"=>"7");
 $DefaultType='garbage';
 $index = 0;
+$colume="";
+
+	$servername = "localhost";
+    $username = "";
+    $password = "";
+
+        // Create connection
+    $conn = mysqli_connect($servername, $username, $password);
+
+        // Check connectionif (!$conn) {
+    if (!$conn) 
+        die("Connection failed: " . mysqli_connect_error());
+    else
+        echo "Connected successfully \n";
+
+    $db_selected = mysqli_select_db($conn,'test');
+    if (!$db_selected) 
+        die ('Can\'t use: ' . mysqli_error());
+    else
+        echo "Connect db done\n";
+
 
 foreach ($Decode_Trash as $row) 
 {
@@ -41,7 +63,8 @@ foreach ($Decode_Trash as $row)
 	//echo "\n\n";
 }
 
-$stmt = $conn->prepare("INSERT INTO parknig (City,LineId,LineName,Rank,lon,lat,Memo,Time,Garbage,Recycle,Food,Name,Village,ID)
+
+$stmt = $conn->prepare("INSERT INTO trash (City,LineId,LineName,Rank,lon,lat,Memo,Time,Garbage,Recycle,Food,Name,Village,ID)
 				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)" );
 if ($stmt === FALSE) {
     die ("Mysql Error: " . $conn->error);
@@ -74,8 +97,8 @@ foreach ($New_Trash as $value)
 	}
 	$count ++;
 	echo $count.$LineName."\n";
-	if($count==10)
-		break;
+	//if($count==10)
+	//	break;
 }
 
 $stmt->close();
