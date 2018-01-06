@@ -2,7 +2,15 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
-$servername = "localhost";
+
+  $content = trim(file_get_contents("php://input"));
+  $decodeCon = json_decode($content, true);
+  $Lat = $decodeCon["Lat"];
+  $Lon = $decodeCon["Lon"];
+
+
+
+  $servername = "localhost";
     $username = "";
     $password = "";
 
@@ -21,33 +29,33 @@ $servername = "localhost";
     //else
         //echo "Connect db done\n";
 
-      $_POST["Lat"];
-      $_POST["Lon"]; 
-      //$_POST["Meter"];
+        $count=0;
+        $Resultobject = new stdClass();
+        $InsideObject = new stdClass();
+        $ResponseArray = array(); 
 
 
-    $count=0;
-    $Resultobject = new stdClass();
-    $InsideObject = new stdClass();
-    $ResponseArray = array(); //Remember to pass other feilds 
-    if ($result = $conn->query("SELECT * FROM parknig")) 
-    {
-        //foreach($result as $row)
-        //{
-            while($row = $result->fetch_array(MYSQLI_BOTH)) 
-            {
-                $dis = CalculateDis($_POST["Lat"],$_POST["Lon"],$row['Lat'],$row['Lon']);
+        if ($result = $conn->query("SELECT * FROM parknig")) 
+        {
+            //foreach($result as $row)
+            //{
+                while($row = $result->fetch_array(MYSQLI_BOTH)) 
+                {
+                    $dis = CalculateDis($Lat,$Lon,$row['Lat'],$row['Lon']);
 
-                if($dis<1000){
-                     $row['Distance'] = $dis;
-                    $ResponseArray[] = $row; 
-                }           
-            }                   
+                    if($dis<1000){
+                         $row['Distance'] = $dis;
+                         $ResponseArray[] = $row; 
+                    }           
+                }                   
 
-        $Resultobject->ParkingResult = $ResponseArray;
-    }
-    //var_dump($Resultobject);
-    echo json_encode($Resultobject);
+            $Resultobject->ParkingResult = $ResponseArray;
+        }
+        //var_dump($Resultobject);
+       
+  echo json_encode($Resultobject);
+ 
+   // echo $Lat." ".$Lon;
    $result->close();
     
 
@@ -70,13 +78,5 @@ function CalculateDis($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo)
   return $angle * $earthRadius;
 }
 
-//$lat,$lon
 
-    //$lat = $_REQUEST["lat"];
-    //$lon = $_REQUEST["lon"];
-
-    
-
-
-//echo "距離 = ".CalculateDis(25.0354351,121.4302754,25.0403582,21.4449868);
 ?>
