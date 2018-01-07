@@ -7,6 +7,7 @@ header('Content-Type: application/json; charset=utf-8');
   $decodeCon = json_decode($content, true);
   $Lat = $decodeCon["Lat"];
   $Lon = $decodeCon["Lon"];
+  $type = $decodeCon["type"];
 
 
 
@@ -34,16 +35,26 @@ header('Content-Type: application/json; charset=utf-8');
         $InsideObject = new stdClass();
         $ResponseArray = array(); 
 
+        if(strcmp("trash", $type)){
+          $dismax = 1000;
+          $sql = "SELECT * FROM trash";
+        }
+        else{
+          $dismax = 1000;
+          $sql = "SELECT * FROM parknig"; 
+        }
 
-        if ($result = $conn->query("SELECT * FROM parknig")) 
+
+
+        if ($result = $conn->query($sql)) 
         {
             //foreach($result as $row)
             //{
-                while($row = $result->fetch_array(MYSQLI_BOTH)) 
+                while($row = $result->fetch_array(MYSQLI_ASSOC)) 
                 {
                     $dis = CalculateDis($Lat,$Lon,$row['Lat'],$row['Lon']);
 
-                    if($dis<1000){
+                    if($dis<$dismax){
                          $row['Distance'] = $dis;
                          $ResponseArray[] = $row; 
                     }           
