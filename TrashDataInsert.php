@@ -1,7 +1,7 @@
 <?php
 
 header('Content-Type: application/json; charset=utf-8');
-ini_set("max_execution_time", "300");
+ini_set("max_execution_time", "2000");
 $Json_Trash=file_get_contents('http://data.ntpc.gov.tw/od/data/api/EDC3AD26-8AE7-4916-A00B-BC6048D19BF8?$format=json');
 $Decode_Trash = json_decode($Json_Trash);
 $New_Trash = array();
@@ -69,7 +69,7 @@ $stmt = $conn->prepare("INSERT INTO trash (City,LineId,LineName,Rank,lon,lat,Mem
 if ($stmt === FALSE) {
     die ("Mysql Error: " . $conn->error);
 }
-$stmt->bind_param("sisiddsisssssi",$City,$LineId,$LineName,$Rank,$lon,$lat,$Memo,$Time,$Garbage,$Recycle,$Food,$Name,$Village,$ID);
+$stmt->bind_param("sisiddsssssssi",$City,$LineId,$LineName,$Rank,$lon,$lat,$Memo,$Time,$Garbage,$Recycle,$Food,$Name,$Village,$ID);
 $count=0;
 foreach ($New_Trash as $value) 
 {
